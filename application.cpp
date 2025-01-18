@@ -108,11 +108,18 @@ void Menu::prompt()
 void Menu::motherboard_options()
 {
     cout << "\nMotherboards! Please select an option." << endl;
-    int choice{};
 
+    int choice{};
     do{
-        cout << "\n\t0. Return to main menu\n\t1. Display All Motherboards\n\t2. Find a Motherboard by name and display it\n\t3. Find a motherboard and retreive it to your cart" << endl
-            << "\t4. Delete all Motherboards from the list\n\t5. Delete a specific Motherboard\n\t6. Add a new Motherboard\n\t7.Load Motherboards from file" << endl;
+        cout << "\n\t"
+             << "0. Return to main menu\n\t"
+             << "1. Display All Motherboards\n\t"
+             << "2. Find a Motherboard by name and display it\n\t"
+             << "3. Find a motherboard and retreive it to your cart\n\t"
+             << "4. Delete all Motherboards from the list\n\t"
+             << "5. Delete a specific Motherboard\n\t"
+             << "6. Add a new Motherboard\n\t"
+             << "7.Load Motherboards from file" << endl;
         choice = read_int();
 
         switch (choice){
@@ -120,6 +127,7 @@ void Menu::motherboard_options()
 
             case 1: {
                         cout << "\nApply display filters?" << endl;
+
                         int display_opt{};
                         do{
                             processor the_processor;
@@ -127,8 +135,15 @@ void Menu::motherboard_options()
                             int ports_in{};
                             string details_keyword{};
                             int count{1};
-                            cout << "\n\t0. Return to Motherboards menu\n\t1. All\n\t2. Processsor \n\t3. Ports\n\t4. Details contain" << endl;
+
+                            cout << "\n\t"
+                                 << "0. Return to Motherboards menu\n\t"
+                                 << "1. All\n\t"
+                                 << "2. Processsor \n\t"
+                                 << "3. Ports\n\t"
+                                 << "4. Details contain" << endl;
                             display_opt = read_int();
+
                             if (display_opt == 2){
                                 cout << "\nelect which processor type boards to display." << endl
                                      << '\t' <<  "1. Intel" << endl
@@ -150,15 +165,19 @@ void Menu::motherboard_options()
                                            break;
                                 }
                             }
+
                             else if (display_opt == 3){
                                 cout << "\nEnter the number of USB ports." << endl;
                                 ports_in = read_int();
                             }
+
                             else if (display_opt == 4){
                                 cout << "\nEnter a keyword to search for in details." << endl;
                                 details_keyword = read_string();
                             }
+
                             cout << endl;
+
                             switch (display_opt){
                                 case 0: break;
 
@@ -310,7 +329,7 @@ void Menu::motherboard_options()
 
             default: break;
         }
-    }while (choice);
+    } while (choice);
 }
 
 //present options for working with GPUs
@@ -319,8 +338,16 @@ void Menu::graphics_options()
     cout << "\nGPUs! Please select an option." << endl;
     int choice{};
     do{
-        cout << "\n\t0. Return to main menu\n\t1. Display All GPUs\n\t2. Find a GPU by name and display it\n\t3. Find a GPU by name and retreive it to your cart" << endl
-            <<  "\t4. Delete all GPUs from the list\n\t5. Delete a specific GPU\n\t6. Add a new GPU.\n\t7. Load GPUs from a file\n\t8. Test the assignemnt operator for the GPU CLL" << endl;
+        cout << "\n\t"
+             << "0. Return to main menu\n\t"
+             << "1. Display All GPUs\n\t"
+             << "2. Find a GPU by name and display it\n\t"
+             << "3. Find a GPU by name and retreive it to your cart\n\t"
+             << "4. Delete all GPUs from the list\n\t"
+             << "5. Delete a specific GPU\n\t"
+             << "6. Add a new GPU.\n\t"
+             << "7. Load GPUs from a file\n\t"
+             << "8. Test the assignemnt operator for the GPU CLL" << endl;
         choice = read_int();
 
         switch (choice){
@@ -335,7 +362,12 @@ void Menu::graphics_options()
                             int fans_in{};
                             string review_keyword{""};
 
-                            cout << "\n\t0. Return to GPUs menu\n\t1. All\n\t2. Vram minimum\n\t3. Fans\n\t4. Review contains" << endl;
+                            cout << "\n\t"
+                                 << "0. Return to GPUs menu\n\t"
+                                 << "1. All\n\t"
+                                 << "2. Vram minimum\n\t"
+                                 << "3. Fans\n\t"
+                                 << "4. Review contains" << endl;
 
                             display_opt = read_int();
 
@@ -414,7 +446,7 @@ void Menu::graphics_options()
 
                         cout << "\nEnter the product type." << endl;
                         type = read_string();
-                        cout << "\nEnter the Graphics Card name." << endl;
+                        cout << "Enter the Graphics Card name." << endl;
                         name = read_string();
                         cout << "Enter the number of fans." << endl;
                         fans = read_int();
@@ -459,8 +491,16 @@ void Menu::screen_options()
     cout << "\nScreens! Please select an option." << endl;
     int choice{};
     do{
-        cout << "\n\t0. Return to main menu\n\t1. Display All Screens\n\t2. Find a Screen by name and display it\n\t3. Find a Screen by name and retreive it to your cart" << endl
-            << "\t4. Delete all Screens from the list\n\t5. Delete a specific Screen\n\t6. Add a new Screen.\n\t7. Load Screens from a file\n\t8. Test the assignment operator for the ARR" << endl;
+        cout << "\n\t"
+             << "0. Return to main menu\n\t"
+             << "1. Display All Screens\n\t"
+             << "2. Find a Screen by name and display it\n\t"
+             << "3. Find a Screen by name and retreive it to your cart\n\t"
+             << "4. Delete all Screens from the list\n\t"
+             << "5. Delete a specific Screen\n\t"
+             << "6. Add a new Screen.\n\t"
+             << "7. Load Screens from a file\n\t"
+             << "8. Test the assignment operator for the ARR" << endl;
         choice = read_int();
         switch (choice){
             case 0:
@@ -470,7 +510,12 @@ void Menu::screen_options()
                         int display_opt{};
                         do{
                             string the_manufacturer{""};
-                            cout << "\n\t0. Return to Screens menu\n\t1. All\n\t2. Over 4K\n\t3. Manufacturer\n\t4. Include aspect astio" << endl;
+                            cout << "\n\t"
+                                 << "0. Return to Screens menu\n\t"
+                                 << "1. All\n\t"
+                                 << "2. Over 4K\n\t"
+                                 << "3. Manufacturer\n\t"
+                                 << "4. Include aspect ratio" << endl;
                             display_opt = read_int();
                             if (display_opt == 3){
                                 cout << "\nEnter a manufaturer name." << endl;
