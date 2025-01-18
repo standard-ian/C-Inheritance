@@ -101,66 +101,37 @@ int CLLGraphics::display(const int display_opt, const std::string &review_keywor
 //display all the GPUs in the CLLGraphics, return nodes displayed. this is the recursive function
 int CLLGraphics::display(Graphics_Node *current, const int display_opt, const std::string &review_keyword, const int vram_in, const int fans_in) const
 {
-    if (current == this -> rear){
-        switch (display_opt){
-            case 1: {
-                        put_nums();
-                        rear -> display();
-                    }
-                    break;
-
-            case 2:
-                    if (rear -> is_vram_over(vram_in)){
-                        put_nums();
-                        rear -> display();
-                    }
-                    break;
-
-            case 3:
-                    if (rear -> is_fans_count(fans_in)){
-                        put_nums();
-                        rear -> display();
-                    }
-                    break;
-
-            case 4:
-                    if (rear -> is_review_contain(review_keyword)){
-                        put_nums();
-                        rear -> display();
-                    }
-                    break;
-
-        }
-        return 0;
-    }
     switch (display_opt){
         case 1: {
                     put_nums();
-                    current -> display();
+                    rear -> display();
                 }
                 break;
 
         case 2:
-                if (current -> is_vram_over(vram_in)){
+                if (rear -> is_vram_over(vram_in)){
                     put_nums();
-                    current -> display();
+                    rear -> display();
                 }
                 break;
 
         case 3:
-                if (current -> is_fans_count(fans_in)){
+                if (rear -> is_fans_count(fans_in)){
                     put_nums();
-                    current -> display();
+                    rear -> display();
                 }
                 break;
 
         case 4:
-                if (current -> is_review_contain(review_keyword)){
+                if (rear -> is_review_contain(review_keyword)){
                     put_nums();
-                    current -> display();
+                    rear -> display();
                 }
                 break;
+
     }
+    if (current == this -> rear)
+        return 0;'
     return display(current -> get_next(), display_opt, review_keyword, vram_in, fans_in) + 1;
 }
 
