@@ -1,0 +1,20 @@
+ROG-STRIX-B550F,Motherboard,Premium gaming board with RGB headers,4,2
+TUF-X570-PLUS,Motherboard,Military-grade components for stability,3,1
+MPG-B450-TOMAHAWK,Motherboard,Popular mid-range AMD choice,5,2
+PRIME-Z690-A,Motherboard,Intel 12th gen ready with DDR5,6,3
+MEG-Z590-ACE,Motherboard,Premium overclocking features included,7,1
+B660M-GAMING-X,Motherboard,Compact build with good thermals,4,2
+PRO-H610M,Motherboard,Budget-friendly office solution,2,1
+X570S-AORUS-MASTER,Motherboard,High-end Ryzen optimization,8,3
+B550M-DS3H,Motherboard,Basic micro-ATX with essentials,3,2
+ROG-CROSSHAIR-VIII,Motherboard,Republic of gamers flagship board,7,1
+PRIME-H510M-K,Motherboard,Entry-level Intel support,2,2
+MAG-B550M-MORTAR,Motherboard,Compact warrior design,5,3
+Z690-AORUS-ELITE,Motherboard,Future-proof gaming choice,6,1
+B450-A-PRO-MAX,Motherboard,Value champion for AMD,4,2
+ROG-MAXIMUS-XIII,Motherboard,Premium Intel overclocking,8,3
+PRO-B660M-A,Motherboard,Solid mid-range performer,5,1
+X570-GAMING-PLUS,Motherboard,Feature-rich AMD solution,6,2
+B550-GAMING-EDGE,Motherboard,Sharp design with WiFi6,4,3
+Z590-A-PRO,Motherboard,Clean aesthetics performer,3,1
+H670-PRO-RS,Motherboard,Business-focused reliable board,2,2

@@ -26,11 +26,11 @@ TAR_FILE = ${LOGNAME}_$(PROG1).tar.gz
 
 tar:
 	rm -f $(TAR_FILE)
-	tar cvaf $(TAR_FILE) *.cpp *.h [Mm]akefile
+	tar cvaf $(TAR_FILE) *.txt *.cpp *.h [Mm]akefile
 	tar tvaf $(TAR_FILE)
 
 git :
 	if [ ! -d .git ] ; then git init; fi
-	git add *.cpp *.h ?akefile
+	git add *.cpp *.h *.txt ?akefile
 	git commit
 	git push

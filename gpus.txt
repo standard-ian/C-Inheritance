@@ -1,0 +1,30 @@
+RTX4090-ROG-STRIX,GPU,Absolutely demolishes everything,32,2
+RTX4090-SUPRIM-X,GPU,Monster needs two PSUs,32,1
+RTX4090-GAMING-OC,GPU,Wallet screams in pain,32,3
+RTX4080-TUF-GAMING,GPU,Still incredibly powerful,28,2
+RTX4080-GAMING-X-TRIO,GPU,Makes bank account cry,28,1
+RTX4070TI-GAMING-OC,GPU,Actually somewhat reasonable,24,3
+RTX4070TI-WINDFORCE,GPU,Perfect 1440p beast,24,2
+RTX4070-TWIN-EDGE,GPU,Finally affordable RTX,20,1
+RTX4070-VENTUS,GPU,Sweet spot champion,20,3
+RTX3090TI-GAMING-X,GPU,Last-gen performance king,32,2
+RTX3090-FTW3-ULTRA,GPU,Still packs a punch,28,1
+RTX3080TI-VISION-OC,GPU,Aged like fine wine,28,3
+RTX3080-GAMING-PRO,GPU,Reliable frame crusher,24,2
+RTX3070TI-AORUS,GPU,Mid-range performance king,20,1
+RTX3070-GAMING-X,GPU,Perfect for most gamers,16,3
+RTX3060TI-DUAL,GPU,Value champion lives,12,2
+RTX3060-EAGLE,GPU,Entry-level ray tracing,8,1
+RX7900XTX-GAMING-OC,GPU,AMD flagship flies,32,3
+RX7900XT-PULSE,GPU,Red team powerhouse,28,2
+RX7800XT-NITRO,GPU,Sweet spot perfection,24,1
+RX7700XT-HELLHOUND,GPU,Surprisingly fierce performer,20,3
+RX7600-SWFT,GPU,Budget gaming king,16,2
+RX6950XT-TOXIC,GPU,Previous-gen monster,28,1
+RX6900XT-RED-DEVIL,GPU,Still destroying frames,24,3
+RX6800XT-MERC,GPU,Aged wonderfully well,20,2
+RX6800-GAMING-X,GPU,Reliable performer lives,16,1
+RX6750XT-GAMING,GPU,Mid-range marvel shines,16,3
+RX6700XT-MECH,GPU,Solid 1440p choice,12,2
+RX6650XT-CHALLENGER,GPU,Budget warrior stands,8,1
+RX6600-FIGHTER,GPU,Entry-level champion,8,3
