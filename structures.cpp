@@ -131,7 +131,7 @@ int CLLGraphics::display(Graphics_Node *current, const int display_opt, const st
 
     }
     if (current == this -> rear)
-        return 0;'
+        return 0;
     return display(current -> get_next(), display_opt, review_keyword, vram_in, fans_in) + 1;
 }
 
