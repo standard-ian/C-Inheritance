@@ -104,31 +104,30 @@ int CLLGraphics::display(Graphics_Node *current, const int display_opt, const st
     switch (display_opt){
         case 1: {
                     put_nums();
-                    rear -> display();
+                    current -> display();
                 }
                 break;
 
         case 2:
-                if (rear -> is_vram_over(vram_in)){
+                if (current -> is_vram_over(vram_in)){
                     put_nums();
-                    rear -> display();
+                    current -> display();
                 }
                 break;
 
         case 3:
-                if (rear -> is_fans_count(fans_in)){
+                if (current -> is_fans_count(fans_in)){
                     put_nums();
-                    rear -> display();
+                    current -> display();
                 }
                 break;
 
         case 4:
-                if (rear -> is_review_contain(review_keyword)){
+                if (current -> is_review_contain(review_keyword)){
                     put_nums();
-                    rear -> display();
+                    current -> display();
                 }
                 break;
-
     }
     if (current == this -> rear)
         return 0;
@@ -278,7 +277,7 @@ int CLLGraphics::deep_copy(Graphics_Node *source_current, const Graphics_Node *s
 
 void CLLGraphics::put_nums() const
 {
-    printf("|\033[3;38;91m%4i. \033[0;0m", nums++);
+    printf("|\033[38;3;91m%4i. \033[0;0m", nums++);
 }
 
 void CLLGraphics::reset_nums() const
@@ -425,7 +424,7 @@ int ARRScreen::display(Screen_Node *current, const int display_opt, const std::s
         case 4: {
                     put_nums();
                     current -> display();
-                    printf(" %-5s|\n", current -> aspect_ratio().c_str());
+                    printf(" %-6s|\n", current -> aspect_ratio().c_str());
                 }
                 break;
     }
@@ -614,7 +613,7 @@ int ARRScreen::deep_copy(Screen_Node *source, Screen_Node *&dest)
 
 void ARRScreen::put_nums() const
 {
-    printf("|\033[3;38;91m%4i. \033[0;0m", nums++);
+    printf("|\033[38;3;91m%4i. \033[0;0m", nums++);
 }
 
 void ARRScreen::reset_nums() const

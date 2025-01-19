@@ -213,7 +213,7 @@ bool Motherboard::display() const
               << " | " << usb_ports
               << " | ";
     */
-    printf(" %-50s| %-3i|", details, usb_ports);
+    printf(" %-40s| %-3i|", details, usb_ports);
     switch (the_processor){
         case processor::none:
             return false;
@@ -296,7 +296,7 @@ bool Graphics::display() const
               << " | " << fans
               << " | " << vram << "GB" << std::endl;
     */
-    printf(" %-50s| %-3i| %-3iGB |\n", review.c_str(), fans, vram);
+    printf(" %-40s| %-3i| %-3iGB |\n", review.c_str(), fans, vram);
 
     return true;
 }

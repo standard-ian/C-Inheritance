@@ -31,7 +31,7 @@ Menu::Menu() : Screens(5, 20) {}
 void Menu::prompt()
 {
     //push up to top of term window and print welcome
-    cout << "\033[2J\033[1;1H" << "\033[3;38;32m" << endl
+    cout << "\033[2J\033[1;1H" << "\033[38;3;32m\n"
         << R"(
 
                                   .,,uod8B8bou,,.
@@ -79,19 +79,19 @@ void Menu::prompt()
                     break;
 
             case 1:
-                        motherboard_options();
+                    motherboard_options();
                     break;
 
             case 2:
-                        graphics_options();
+                    graphics_options();
                     break;
 
             case 3:
-                        screen_options();
+                    screen_options();
                     break;
-            case 4: {
-                        display_cart();
-                    }
+
+            case 4:
+                    display_cart();
                     break;
 
             default:
@@ -144,79 +144,76 @@ void Menu::motherboard_options()
                                  << "4. Details contain" << endl;
                             display_opt = read_int();
 
-                            if (display_opt == 2){
-                                cout << "\nelect which processor type boards to display." << endl
-                                     << '\t' <<  "1. Intel" << endl
-                                     << '\t' << "2. AMD" << endl
-                                     << '\t' << "3. ARM" << endl;
-                                processor_selection = read_int();
-                                switch (processor_selection){
-                                   case 1:
-                                       the_processor = processor::intel;
-                                       break;
-                                   case 2:
-                                       the_processor = processor::amd;
-                                       break;
-                                   case 3:
-                                       the_processor = processor::arm;
-                                       break;
-                                   default:
-                                           //throw exception
-                                           break;
-                                }
-                            }
-
-                            else if (display_opt == 3){
-                                cout << "\nEnter the number of USB ports." << endl;
-                                ports_in = read_int();
-                            }
-
-                            else if (display_opt == 4){
-                                cout << "\nEnter a keyword to search for in details." << endl;
-                                details_keyword = read_string();
-                            }
-
-                            cout << endl;
-
+                            //display options for motherboards
                             switch (display_opt){
                                 case 0: break;
 
-                                case 1:
-                                        for (const auto& item : Motherboards){
-                                            printf("|\033[3;38;91m%4i. \033[0;0m", count++);
-                                            item.display();
-                                        }
-                                        break;
-
-                                case 2:
-                                        for (const auto& item : Motherboards){
-                                            if (item.is_processor(the_processor)){
-                                                printf("|\033[3;38;91m%4i. \033[0;0m", count++);
-                                                item.display();
-                                            }
-                                        }
-                                            break;
-
-                                case 3:
-                                        for (const auto& item : Motherboards){
-                                            if (item.is_more_than_ports(ports_in)){
-                                                printf("|\033[3;38;91m%4i. \033[0;0m", count++);
-                                                item.display();
-                                            }
-                                        }
-                                            break;
-
-                                case 4:
-                                        for (const auto& item : Motherboards){
-                                            if (item.is_details_contain(details_keyword)){
-                                                printf("|\033[3;38;91m%4i. \033[0;0m", count++);
+                                case 1: {
+                                            cout << endl;
+                                            for (const auto& item : Motherboards){
+                                                printf("|\033[38;391m%4i. \033[0;0m", count++);
                                                 item.display();
                                             }
                                         }
                                         break;
 
-                                default: break;
+                                case 2: {
+                                            cout << "\nelect which processor type boards to display." << endl
+                                                 << '\t' <<  "1. Intel" << endl
+                                                 << '\t' << "2. AMD" << endl
+                                                 << '\t' << "3. ARM" << endl;
+                                            processor_selection = read_int();
+                                            switch (processor_selection){
+                                               case 1:
+                                                       the_processor = processor::intel;
+                                                       break;
+                                               case 2:
+                                                       the_processor = processor::amd;
+                                                       break;
+                                               case 3:
+                                                       the_processor = processor::arm;
+                                                       break;
+                                               default:
+                                                       //throw exception
+                                                       break;
+                                            }
+                                            for (const auto& item : Motherboards){
+                                                if (item.is_processor(the_processor)){
+                                                    printf("|\033[38;391m%4i. \033[0;0m", count++);
+                                                    item.display();
+                                                }
+                                            }
+                                        }
+                                        break;
+
+                                case 3: {
+                                            cout << "\nEnter the number of USB ports." << endl;
+                                            ports_in = read_int();
+                                            for (const auto& item : Motherboards){
+                                                if (item.is_more_than_ports(ports_in)){
+                                                    printf("|\033[38;391m%4i. \033[0;0m", count++);
+                                                    item.display();
+                                                }
+                                            }
+                                        }
+                                        break;
+
+                                case 4: {
+                                            cout << "\nEnter a keyword to search for in details." << endl;
+                                            details_keyword = read_string();
+                                            for (const auto& item : Motherboards){
+                                                if (item.is_details_contain(details_keyword)){
+                                                    printf("|\033[38;391m%4i. \033[0;0m", count++);
+                                                    item.display();
+                                                }
+                                            }
+                                        }
+                                        break;
+
+                                default:
+                                        break;
                             }
+
                         }while (display_opt && again());
                     }
                     break;
@@ -304,14 +301,14 @@ void Menu::motherboard_options()
 
                         switch (processor_selection){
                            case 1:
-                               the_processor = processor::intel;
-                               break;
+                                   the_processor = processor::intel;
+                                   break;
                            case 2:
-                               the_processor = processor::amd;
-                               break;
+                                   the_processor = processor::amd;
+                                   break;
                            case 3:
-                               the_processor = processor::arm;
-                               break;
+                                   the_processor = processor::arm;
+                                   break;
                            default:
                                    //throw exception
                                    break;
@@ -321,10 +318,9 @@ void Menu::motherboard_options()
                     }while (again());
                     break;
 
-            case 7:{
+            case 7:
                     if (!load_motherboards())
                         cout << "\nERROR! Failed to load Motherboards." << endl;
-                   }
                     break;
 
             default: break;
@@ -370,26 +366,34 @@ void Menu::graphics_options()
                                  << "4. Review contains" << endl;
 
                             display_opt = read_int();
+                            switch (display_opt){
 
-                            if (display_opt == 2){
-                                cout << "\nEnter a VRAM amount." << endl;
-                                vram_in = read_int();
-                            }
+                                case 1:
+                                        break;
 
-                            else if (display_opt == 3){
-                                cout << "\nEnter a number of fans." << endl;
-                                fans_in = read_int();
-                            }
+                                case 2: {
+                                            cout << "\nEnter a VRAM amount." << endl;
+                                            vram_in = read_int();
+                                        }
+                                        break;
 
-                            else if (display_opt == 4){
-                                cout << "\nEnter a keyword to search for in reviews." << endl;
-                                review_keyword = read_string();
-                            }
+                                case 3: {
+                                            cout << "\nEnter a number of fans." << endl;
+                                            fans_in = read_int();
+                                        }
+                                        break;
 
-                            if (display_opt){
-                                cout << endl;
-                                GPUs.display(display_opt, review_keyword, vram_in, fans_in);
+                                case 4: {
+                                            cout << "\nEnter a keyword to search for in reviews." << endl;
+                                            review_keyword = read_string();
+                                        }
+                                        break;
+
+                                default:
+                                        break;
+
                             }
+                            GPUs.display(display_opt, review_keyword, vram_in, fans_in);
 
                         }while (display_opt && again());
                     }
@@ -629,7 +633,7 @@ void Menu::screen_options()
 const string Menu::read_string()
 {
     string the_string;
-    cout << '>';
+    cout << "\033[38;5;32m" << ">>" << "\033[0m";;
     getline(cin, the_string);
     return the_string;
 }
@@ -638,12 +642,13 @@ const string Menu::read_string()
 const int Menu::read_int()
 {
     int the_int{};
-    cout << '>';
+    cout << "\033[38;5;32m" << ">>" << "\033[0m";;
     cin >> the_int;
     while (cin.fail()){
         cin.clear();
         cin.ignore(100, '\n');
-        cout << "\nYou must enter a number.\n>";
+        cout << "\nYou must enter a number." << endl;
+        cout << "\033[38;5;32m" << ">>" << "\033[0m";;
         cin >> the_int;
     }
     cin.ignore(100, '\n');
@@ -654,7 +659,8 @@ const int Menu::read_int()
 bool Menu::again()
 {
     char again{};
-    cout << "\nAgain? (y/n)\n>";
+    cout << "\nAgain? (y/n)" << endl;
+    cout << "\033[38;5;32m" << ">>" << "\033[0m";;
     cin >> again;
     cin.ignore(100, '\n');
     if (toupper(again) == 'Y')
@@ -806,6 +812,7 @@ bool Menu::save_cart()
         item.copy_type(type);
         fileout << name << ',' << type << endl;
         delete [] name;
+        delete [] type;
     }
     fileout.close();
     return true;
@@ -825,8 +832,8 @@ bool Menu::read_string_from_file(string &dest, char delim)
 void Menu::display_cart(){
     int count{1};
     for (const auto& item : cart){
-        //cout << "\033[3;38;91m" << count++ << ". " << "\033[0;0m";
-        printf("|\033[3;38;91m%4i. \033[0;0m", count++);
+        //cout << "\033[38;391m" << count++ << ". " << "\033[0;0m";
+        printf("|\033[38;391m%4i. \033[0;0m", count++);
         item.display();
         cout << endl;
     }
