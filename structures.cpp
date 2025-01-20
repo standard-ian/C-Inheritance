@@ -101,10 +101,12 @@ int CLLGraphics::display(const int display_opt, const std::string &review_keywor
 //display all the GPUs in the CLLGraphics, return nodes displayed. this is the recursive function
 int CLLGraphics::display(Graphics_Node *current, const int display_opt, const std::string &review_keyword, const int vram_in, const int fans_in) const
 {
+    int was_displayed{};
     switch (display_opt){
         case 1: {
                     put_nums();
                     current -> display();
+                    ++was_displayed;
                 }
                 break;
 
@@ -112,6 +114,7 @@ int CLLGraphics::display(Graphics_Node *current, const int display_opt, const st
                 if (current -> is_vram_over(vram_in)){
                     put_nums();
                     current -> display();
+                    ++was_displayed;
                 }
                 break;
 
@@ -119,6 +122,7 @@ int CLLGraphics::display(Graphics_Node *current, const int display_opt, const st
                 if (current -> is_fans_count(fans_in)){
                     put_nums();
                     current -> display();
+                    ++was_displayed;
                 }
                 break;
 
@@ -126,12 +130,13 @@ int CLLGraphics::display(Graphics_Node *current, const int display_opt, const st
                 if (current -> is_review_contain(review_keyword)){
                     put_nums();
                     current -> display();
+                    ++was_displayed;
                 }
                 break;
     }
     if (current == this -> rear)
-        return 0;
-    return display(current -> get_next(), display_opt, review_keyword, vram_in, fans_in) + 1;
+        return was_displayed;
+    return display(current -> get_next(), display_opt, review_keyword, vram_in, fans_in) + was_displayed;
 }
 
 //add a new Graphics to the CLLGraphics. return success or faliure.
@@ -210,7 +215,6 @@ bool CLLGraphics::find(const std::string &to_find)
 {
     if (!rear) return false;
     if (rear -> compare_names(to_find.c_str())){ //match found
-        rear -> display();
         return true;
     }
     return find(to_find, rear -> get_next());
@@ -221,7 +225,6 @@ bool CLLGraphics::find(const std::string &to_find, Graphics_Node *current)
 {
     if (current == this -> rear) return false;
     if (current -> compare_names(to_find.c_str())){ //match found
-        current -> display();
         return true;
     }
     return find(to_find, current -> get_next());
@@ -396,11 +399,13 @@ int ARRScreen::display(Screen_Node **ptr, const int display_opt, const std::stri
 //display all, recursive function - LLL traversal
 int ARRScreen::display(Screen_Node *current, const int display_opt, const std::string &the_manufacturer) const
 {
+    int was_displayed{};
     if (!current) return 0;
     switch (display_opt){
         case 1: {
                     put_nums();
                     current -> display();
+                    ++was_displayed;
                     std::cout << std::endl;
                 }
                 break;
@@ -409,6 +414,7 @@ int ARRScreen::display(Screen_Node *current, const int display_opt, const std::s
                 if (current -> is_4k()){
                     put_nums();
                     current -> display();
+                    ++was_displayed;
                     std::cout << std::endl;
                 }
                 break;
@@ -417,6 +423,7 @@ int ARRScreen::display(Screen_Node *current, const int display_opt, const std::s
                 if (current -> is_manufacturer(the_manufacturer)){
                     put_nums();
                     current -> display();
+                    ++was_displayed;
                     std::cout << std::endl;
                 }
                 break;
@@ -424,11 +431,13 @@ int ARRScreen::display(Screen_Node *current, const int display_opt, const std::s
         case 4: {
                     put_nums();
                     current -> display();
-                    printf(" %-6s|\n", current -> aspect_ratio().c_str());
+                    std::cout << std::left << std::setw(6) << current -> aspect_ratio() << " | " << std::endl;
+                    ++was_displayed;
+                    //printf(" %-6s|\n", current -> aspect_ratio().c_str());
                 }
                 break;
     }
-    return display(current -> get_next(), display_opt, the_manufacturer) + 1;
+    return display(current -> get_next(), display_opt, the_manufacturer) + was_displayed;
 }
 
 //add a new Screen to the ARR, wrapper
@@ -540,8 +549,6 @@ bool ARRScreen::find(const std::string &to_find, Screen_Node *current) const
 {
     if (!current) return false;
     if (current -> compare_names(to_find.c_str())){
-        std::cout << std::endl;
-        current -> display();
         return true;
     }
     return find(to_find, current -> get_next());

@@ -31,7 +31,7 @@ Menu::Menu() : Screens(5, 20) {}
 void Menu::prompt()
 {
     //push up to top of term window and print welcome
-    cout << "\033[2J\033[1;1H" << "\033[38;3;32m\n"
+    cout << "\033[2J\033[1;1H" << "\033[38;3;32m" << endl
         << R"(
 
                                   .,,uod8B8bou,,.
@@ -114,12 +114,12 @@ void Menu::motherboard_options()
         cout << "\n\t"
              << "0. Return to main menu\n\t"
              << "1. Display All Motherboards\n\t"
-             << "2. Find a Motherboard by name and display it\n\t"
+             << "2. Check if a motherboard is in the list\n\t"
              << "3. Find a motherboard and retreive it to your cart\n\t"
              << "4. Delete all Motherboards from the list\n\t"
              << "5. Delete a specific Motherboard\n\t"
              << "6. Add a new Motherboard\n\t"
-             << "7.Load Motherboards from file" << endl;
+             << "7. Load Motherboards from file" << endl;
         choice = read_int();
 
         switch (choice){
@@ -151,14 +151,15 @@ void Menu::motherboard_options()
                                 case 1: {
                                             cout << endl;
                                             for (const auto& item : Motherboards){
-                                                printf("|\033[38;391m%4i. \033[0;0m", count++);
-                                                item.display();
+                                                printf("|\033[38;3;91m%4i. \033[0;0m", count);
+                                                if (item.display())
+                                                    ++count;
                                             }
                                         }
                                         break;
 
                                 case 2: {
-                                            cout << "\nelect which processor type boards to display." << endl
+                                            cout << "\nSelect which processor type boards to display." << endl
                                                  << '\t' <<  "1. Intel" << endl
                                                  << '\t' << "2. AMD" << endl
                                                  << '\t' << "3. ARM" << endl;
@@ -179,8 +180,9 @@ void Menu::motherboard_options()
                                             }
                                             for (const auto& item : Motherboards){
                                                 if (item.is_processor(the_processor)){
-                                                    printf("|\033[38;391m%4i. \033[0;0m", count++);
-                                                    item.display();
+                                                    printf("|\033[38;3;91m%4i. \033[0;0m", count);
+                                                    if (item.display())
+                                                        ++count;
                                                 }
                                             }
                                         }
@@ -191,8 +193,9 @@ void Menu::motherboard_options()
                                             ports_in = read_int();
                                             for (const auto& item : Motherboards){
                                                 if (item.is_more_than_ports(ports_in)){
-                                                    printf("|\033[38;391m%4i. \033[0;0m", count++);
-                                                    item.display();
+                                                    printf("|\033[38;3;91m%4i. \033[0;0m", count);
+                                                    if (item.display())
+                                                        ++count;
                                                 }
                                             }
                                         }
@@ -203,8 +206,9 @@ void Menu::motherboard_options()
                                             details_keyword = read_string();
                                             for (const auto& item : Motherboards){
                                                 if (item.is_details_contain(details_keyword)){
-                                                    printf("|\033[38;391m%4i. \033[0;0m", count++);
-                                                    item.display();
+                                                    printf("|\033[38;3;91m%4i. \033[0;0m", count);
+                                                    if (item.display())
+                                                        ++count;
                                                 }
                                             }
                                         }
@@ -213,6 +217,11 @@ void Menu::motherboard_options()
                                 default:
                                         break;
                             }
+
+                            if (count > 1)
+                                cout << "\n" << count-1 << " Motherboards displayed" << endl;
+                            else
+                                cout << "\nERROR! No Motherboards in list." << endl;
 
                         }while (display_opt && again());
                     }
@@ -226,7 +235,7 @@ void Menu::motherboard_options()
                         cout << endl;
                         for (const auto& item : Motherboards){
                             if (item.compare_names(to_find.c_str())){
-                                item.display();
+                                //item.display();
                                 found = true;
                                 break;
                             }
@@ -234,6 +243,8 @@ void Menu::motherboard_options()
 
                         if (!found)
                             cout << "\nMotherboard not found." << endl;
+                        else
+                            cout << "\nThat Motherboard was found." << endl;
 
                     }while (again());
                     break;
@@ -258,8 +269,9 @@ void Menu::motherboard_options()
                     break;
 
             case 4: {
-                       Motherboards.clear();
-                       cout << "\nAll Motherboards removed." << endl;
+                        int removed = Motherboards.size();
+                        Motherboards.clear();
+                        cout << "\n" << removed << " Motherboards have been removed. The list is now empty." << endl;
                     }
                     break;
 
@@ -278,6 +290,7 @@ void Menu::motherboard_options()
 
             case 6:
                     do{
+                        bool found{false};
                         int usb_ports{};
                         int processor_selection{};
                         processor the_processor{processor::none};
@@ -285,10 +298,31 @@ void Menu::motherboard_options()
                         string name{};
                         string type{};
 
-                        cout << "\nEnter the product type." << endl;
-                        type = read_string();
                         cout << "\nEnter the Motherboard name." << endl;
                         name = read_string();
+
+                        do{
+                            for (const auto& item : Motherboards){
+                                if (item.compare_names(name.c_str())){
+                                    name = "";
+                                    found = true;
+                                    cout << "\nERROR! That item already exists. Try entering a unique name." << endl;
+                                    name = read_string();
+                                    break;
+                                }
+                                else found = false;
+                            }
+                        }while (found);
+
+                        cout << "Enter the product type." << endl;
+                        type = read_string();
+
+                        do{
+                            cout << "\nERROR! The type must be \"Motherboard\"." << endl;
+                            type = read_string();
+                            cout << endl;
+                        }while (type.compare("Motherboard"));
+
                         cout << "Enter the details or product specifications." << endl;
                         details = read_string();
                         cout << "Enter the number of USB ports." << endl;
@@ -313,6 +347,7 @@ void Menu::motherboard_options()
                                    //throw exception
                                    break;
                         }
+
                         Motherboards.push_back(Motherboard(usb_ports, details.c_str(), the_processor, name.c_str(), type.c_str()));
 
                     }while (again());
@@ -337,7 +372,7 @@ void Menu::graphics_options()
         cout << "\n\t"
              << "0. Return to main menu\n\t"
              << "1. Display All GPUs\n\t"
-             << "2. Find a GPU by name and display it\n\t"
+             << "2. Check if a GPU is in the list\n\t"
              << "3. Find a GPU by name and retreive it to your cart\n\t"
              << "4. Delete all GPUs from the list\n\t"
              << "5. Delete a specific GPU\n\t"
@@ -393,7 +428,12 @@ void Menu::graphics_options()
                                         break;
 
                             }
-                            GPUs.display(display_opt, review_keyword, vram_in, fans_in);
+                            int displayed = GPUs.display(display_opt, review_keyword, vram_in, fans_in);
+
+                            if (!displayed)
+                                cout << "\nERROR! No GPUs in the list." << endl;
+                            else
+                                cout << "\n" << displayed << " GPUs displayed." << endl;
 
                         }while (display_opt && again());
                     }
@@ -448,10 +488,24 @@ void Menu::graphics_options()
                         string review{};
                         string type{};
 
-                        cout << "\nEnter the product type." << endl;
-                        type = read_string();
-                        cout << "Enter the Graphics Card name." << endl;
+                        cout << "\nEnter the Graphics Card name." << endl;
                         name = read_string();
+
+                        while (GPUs.find(name)){
+                            name = "";
+                            cout << "\nERROR! That item already exists. Try entering a unique name." << endl;
+                            name = read_string();
+                        }
+
+                        cout << "Enter the product type." << endl;
+                        type = read_string();
+
+                        do{
+                            cout << "\nERROR! The type must be \"GPU\"." << endl;
+                            type = read_string();
+                            cout << endl;
+                        }while (type.compare("GPU"));
+
                         cout << "Enter the number of fans." << endl;
                         fans = read_int();
                         cout << "Enter the amount of VRAM." << endl;
@@ -498,7 +552,7 @@ void Menu::screen_options()
         cout << "\n\t"
              << "0. Return to main menu\n\t"
              << "1. Display All Screens\n\t"
-             << "2. Find a Screen by name and display it\n\t"
+             << "2. Check if a Screen is in the list\n\t"
              << "3. Find a Screen by name and retreive it to your cart\n\t"
              << "4. Delete all Screens from the list\n\t"
              << "5. Delete a specific Screen\n\t"
@@ -512,6 +566,7 @@ void Menu::screen_options()
             case 1: {
                         cout << "\nApply display filters?" << endl;
                         int display_opt{};
+                        int displayed{};
                         do{
                             string the_manufacturer{""};
                             cout << "\n\t"
@@ -527,8 +582,12 @@ void Menu::screen_options()
                             }
                             if (display_opt){
                                 cout << endl;
-                                Screens.display(display_opt, the_manufacturer);
+                                displayed = Screens.display(display_opt, the_manufacturer);
                             }
+                            if (!displayed)
+                                cout << "\nERROR! No Screens in the list." << endl;
+                            else
+                                cout << "\n" << displayed << " Screens were displayed." << endl;
 
                         }while (display_opt && again());
                     }
@@ -587,10 +646,24 @@ void Menu::screen_options()
                         string manufacturer{};
                         string type{};
 
-                        cout << "\nEnter the product type." << endl;
-                        type = read_string();
                         cout << "\nEnter the Display's name." << endl;
                         name = read_string();
+
+                        while (Screens.find(name)){
+                            name = "";
+                            cout << "\nERROR! That item already exists. Try entering a unique name." << endl;
+                            name = read_string();
+                        }
+
+                        cout << "Enter the product type." << endl;
+                        type = read_string();
+
+                        do{
+                            cout << "\nERROR! The type must be \"Display\"." << endl;
+                            type = read_string();
+                            cout << endl;
+                        }while (type.compare("Display"));
+
                         cout << "Enter the width." << endl;
                         width = read_int();
                         cout << "Enter the height." << endl;
@@ -832,8 +905,8 @@ bool Menu::read_string_from_file(string &dest, char delim)
 void Menu::display_cart(){
     int count{1};
     for (const auto& item : cart){
-        //cout << "\033[38;391m" << count++ << ". " << "\033[0;0m";
-        printf("|\033[38;391m%4i. \033[0;0m", count++);
+        //cout << "\033[38;3;91m" << count++ << ". " << "\033[0;0m";
+        printf("|\033[38;3;91m%4i. \033[0;0m", count++);
         item.display();
         cout << endl;
     }

@@ -84,27 +84,6 @@ class Product
         char *type;
 };
 
-//derived class 1, "is-a" product plus properties unique to GPUs
-class Graphics : public Product
-{
-    public:
-        Graphics();
-        ~Graphics();
-        Graphics(const Graphics &source);
-        Graphics(const int vram_in, const int fans_in, const std::string &review_in, const char *name_in, const char *type_in);
-
-        bool display() const;
-
-        bool is_vram_over(const int vram) const;
-        bool is_fans_count(const int fans) const;
-        bool is_review_contain(const std::string& to_find) const;
-
-    protected:
-        int vram;
-        int fans;
-        std::string review;
-};
-
 
 /*
  * derived class 2, "is-a" product plus properties unique to MBs
@@ -121,7 +100,7 @@ class Motherboard : public Product
         Motherboard& operator=(const Motherboard &source);
         bool display() const;
 
-        bool is_processor(processor &processor_in) const;
+        bool is_processor(const processor &processor_in) const;
         bool is_more_than_ports(int ports) const;
         bool is_details_contain(const std::string &new_details) const;
 
@@ -132,13 +111,36 @@ class Motherboard : public Product
 
 };
 
+//derived class 1, "is-a" product plus properties unique to GPUs
+class Graphics : public Product
+{
+    public:
+        Graphics();
+        ~Graphics();
+        //Graphics(const Graphics &source);
+        Graphics(const int vram_in, const int fans_in, const std::string &review_in, const char *name_in, const char *type_in);
+
+        bool display() const;
+
+        bool is_vram_over(const int vram) const;
+        bool is_fans_count(const int fans) const;
+        bool is_review_contain(const std::string& to_find) const;
+
+    protected:
+        int vram;
+        int fans;
+        std::string review;
+};
+
+
+
 //derived class 3, "is-a" product plus properties unique to Displays.
 class Screen : public Product
 {
     public:
         Screen();
         ~Screen();
-        Screen(const Screen &source);
+        //Screen(const Screen &source);
         Screen(const int height_in, const int width_in, const std::string &manufacturer_in, const char *name_in, const char *type_in);
 
         bool display() const;

@@ -131,8 +131,8 @@ int Product::copy_type(char *&copy) const
 bool Product::display() const
 {
     if (!name) return false;
-    //std::cout << name << " | " << type;
-    printf("%-30s| %-15s|", name, type);
+    std::cout << std::left << std::setw(30) << name << " | " << std::setw(15) << type << " | ";
+    //printf("%-30s| %-15s|", name, type);
     return true;
 }
 
@@ -160,7 +160,7 @@ Motherboard::~Motherboard()
 }
 
 //copy constructor
-Motherboard::Motherboard(const Motherboard &source) : Product(source.name, source.type), details(nullptr), usb_ports(source.usb_ports), the_processor(source.the_processor)
+Motherboard::Motherboard(const Motherboard &source) : Product(source)/*Product(source.name, source.type)*/, details(nullptr), usb_ports(source.usb_ports), the_processor(source.the_processor)
 {
     if(!source.details) return;
     details = new char[strlen(source.details) + 1]; //allocate new memory
@@ -208,12 +208,9 @@ bool Motherboard::display() const
     if (!name || !details || usb_ports == 0)
         return false;
     Product::display();
-    /*
-    std::cout << " | " << details
-              << " | " << usb_ports
-              << " | ";
-    */
-    printf(" %-40s| %-3i|", details, usb_ports);
+    std::cout << std::left << std::setw(40) << details << " | "
+                           << std::setw(3) << usb_ports << " | ";
+    //printf(" %-40s| %-3i|", details, usb_ports);
     switch (the_processor){
         case processor::none:
             return false;
@@ -232,7 +229,7 @@ bool Motherboard::display() const
     return true;
 }
 
-bool Motherboard::is_processor(processor &processor_in) const
+bool Motherboard::is_processor(const processor &processor_in) const
 {
     if (the_processor == processor_in) return true;
     return false;
@@ -276,9 +273,11 @@ Graphics::~Graphics()
     vram = 0; fans = 0; review = "";
 }
 
+/*
 //copy constructor, probably not needed, no dynamic memory in this class
 Graphics::Graphics(const Graphics &source)
     : Product(source.name, source.type), vram(source.vram), fans(source.fans), review(source.review) {}
+*/
 
 //constructor with arguments
 Graphics::Graphics(const int vram_in, const int fans_in, const std::string &review_in, const char *name_in, const char *type_in)
@@ -291,12 +290,10 @@ bool Graphics::display() const
         return false;
 
     Product::display();
-    /*
-    std::cout << " | " << review
-              << " | " << fans
-              << " | " << vram << "GB" << std::endl;
-    */
-    printf(" %-40s| %-3i| %-3iGB |\n", review.c_str(), fans, vram);
+    std::cout << std::left << std::setw(40) << review  << " | "
+                           << std::setw(3) << fans << " | "
+                           << std::setw(4) << vram << "GB | " << std::endl;
+    //printf(" %-40s| %-3i| %-3iGB |\n", review.c_str(), fans, vram);
 
     return true;
 }
@@ -346,10 +343,12 @@ Screen::~Screen()
     resolution_height = 0; resolution_width = 0; manufacturer = "";
 }
 
+/*
 //copy constructor - probably not explicitly needed. no dynamic memory in this class
 Screen::Screen(const Screen &source)
     : Product(source.name, source.type), resolution_height(source.resolution_height),
       resolution_width(source.resolution_width), manufacturer(source.manufacturer) {}
+*/
 
 //constructor w/ arguments
 Screen::Screen(const int width_in, const int height_in, const std::string &manufacturer_in, const char *name_in, const char *type_in)
@@ -361,12 +360,10 @@ bool Screen::display() const
     if (!name || manufacturer == "" || resolution_width == 0 || resolution_height == 0) return 0;
 
     Product::display();
-    /*
-    std::cout << " | " << manufacturer
-              << " | " << resolution_width << 'x' << resolution_height
-              << std::endl;
-    */
-    printf(" %-20s| %-6iX %-6i|", manufacturer.c_str(), resolution_width, resolution_height);
+    std::cout << std::left << std::setw(20) << manufacturer << " | "
+              << std::setw(7) << resolution_width << "X "
+              << std::setw(7) << resolution_height << " | ";
+    //printf(" %-20s| %-6iX %-6i|", manufacturer.c_str(), resolution_width, resolution_height);
     return true;
 }
 

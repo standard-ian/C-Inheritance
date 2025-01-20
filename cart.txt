@@ -1,0 +1,3 @@
+Oranges,Food
+Coffee,Food
+Toothpaste,Care
