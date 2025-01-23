@@ -126,6 +126,11 @@ void Menu::motherboard_options()
             case 0: break;
 
             case 1: {
+                        if (Motherboards.empty()){
+                            cout << "\nERROR! There are no motherboards in the list." << endl;
+                            break;
+                        }
+
                         cout << "\nApply display filters?" << endl;
 
                         int display_opt{};
@@ -227,65 +232,84 @@ void Menu::motherboard_options()
                     }
                     break;
 
-            case 2:
-                    do{
-                        bool found{false};
-                        cout << "\nEnter a Motherboard name to find." << endl;
-                        string to_find = read_string();
-                        cout << endl;
-                        for (const auto& item : Motherboards){
-                            if (item.compare_names(to_find.c_str())){
-                                //item.display();
-                                found = true;
-                                break;
-                            }
+            case 2: {
+                        if (Motherboards.empty()){
+                            cout << "\nERROR! There are no motherboards in the list." << endl;
+                            break;
                         }
+                        do{
+                            bool found{false};
+                            cout << "\nEnter a Motherboard name to find." << endl;
+                            string to_find = read_string();
+                            cout << endl;
+                            for (const auto& item : Motherboards){
+                                if (item.compare_names(to_find.c_str())){
+                                    //item.display();
+                                    found = true;
+                                    break;
+                                }
+                            }
 
-                        if (!found)
-                            cout << "\nMotherboard not found." << endl;
-                        else
-                            cout << "\nThat Motherboard was found." << endl;
+                            if (!found)
+                                cout << "\nMotherboard not found." << endl;
+                            else
+                                cout << "\nThat Motherboard was found." << endl;
 
-                    }while (again());
+                        }while (again());
+                    }
                     break;
 
-            case 3:
-                    do{
-                        int retreived{0};
-                        cout << "\nEnter a Motherboard to retreive." << endl;
-                        string to_retreive = read_string();
-                        for (const auto& item : Motherboards){
-                            if (item.compare_names(to_retreive.c_str())){
-                                cart.push_back(item);
-                                ++retreived;
-                            }
+            case 3: {
+                        if (Motherboards.empty()){
+                            cout << "\nERROR! There are no motherboards in the list." << endl;
+                            break;
                         }
+                        do{
+                            int retreived{0};
+                            cout << "\nEnter a Motherboard to retreive." << endl;
+                            string to_retreive = read_string();
+                            for (const auto& item : Motherboards){
+                                if (item.compare_names(to_retreive.c_str())){
+                                    cart.push_back(item);
+                                    ++retreived;
+                                }
+                            }
 
-                        cout << '\n' << retreived << " Motherboards matching that name were added to the cart.\n\nCart Updated!\n" << endl;
+                            cout << '\n' << retreived << " Motherboards matching that name were added to the cart.\n\nCart Updated!\n" << endl;
 
-                        display_cart();
+                            display_cart();
 
-                    }while (again());
+                        }while (again());
+                    }
                     break;
 
             case 4: {
+                        if (Motherboards.empty()){
+                            cout << "\nERROR! There are no motherboards in the list." << endl;
+                            break;
+                        }
                         int removed = Motherboards.size();
                         Motherboards.clear();
                         cout << "\n" << removed << " Motherboards have been removed. The list is now empty." << endl;
                     }
                     break;
 
-            case 5:
-                    do{
-                        cout << "\nEnter a Motherboard name to remove." << endl;
-                        string to_remove = read_string();
-                        for (auto it = Motherboards.begin(); it != Motherboards.end();) {
-                            if (it -> compare_names(to_remove.c_str()))
-                                it = Motherboards.erase(it);  // erase returns iterator to next element
-                            else
-                                ++it;
+            case 5: {
+                        if (Motherboards.empty()){
+                            cout << "\nERROR! There are no motherboards in the list." << endl;
+                            break;
                         }
-                    }while (again());
+                        do{
+                            cout << "\nEnter a Motherboard name to remove." << endl;
+                            string to_remove = read_string();
+                            for (auto it = Motherboards.begin(); it != Motherboards.end();) {
+                                if (it -> compare_names(to_remove.c_str()))
+                                    it = Motherboards.erase(it);  // erase returns iterator to next element
+                                else
+                                    ++it;
+                            }
+                        }while (again());
+                    }
                     break;
 
             case 6:
@@ -386,6 +410,10 @@ void Menu::graphics_options()
                     break;
 
             case 1: {
+                        if (GPUs.empty()){
+                            cout << "\nERROR! There are no GPUs in the list." << endl;
+                            break;
+                        }
                         cout << "\nApply display filters?" << endl;
                         int display_opt{};
                         do{
@@ -439,45 +467,66 @@ void Menu::graphics_options()
                     }
                     break;
 
-            case 2:
-                    do{
-                        cout << "\nEnter a GPU name to find." << endl;
-                        if (!GPUs.find(read_string()))
-                            cout << "\nThat GPU was not found." << endl;
-                        else{
-                            cout << "\nThat GPU was found." << endl;
+            case 2: {
+                        if (GPUs.empty()){
+                            cout << "\nERROR! There are no GPUs in the list." << endl;
+                            break;
                         }
-                    }while (again());
+                        do{
+                            cout << "\nEnter a GPU name to find." << endl;
+                            if (!GPUs.find(read_string()))
+                                cout << "\nThat GPU was not found." << endl;
+                            else{
+                                cout << "\nThat GPU was found." << endl;
+                            }
+                        }while (again());
+                    }
                     break;
 
-            case 3:
-                    do{
-                        Graphics retreived[10];
-                        cout << "\nEnter a GPU name to retreive matches." << endl;
-                        int num_retreived{GPUs.retreive(read_string(), retreived)};
+            case 3: {
+                        if (GPUs.empty()){
+                            cout << "\nERROR! There are no GPUs in the list." << endl;
+                            break;
+                        }
+                        do{
+                            Graphics retreived[10];
+                            cout << "\nEnter a GPU name to retreive matches." << endl;
+                            int num_retreived{GPUs.retreive(read_string(), retreived)};
 
-                        cout << '\n' << num_retreived << " GPUs matching that name were added to the cart.\n\nCart Updated!\n" << endl;
-                        for (int item = 0; item < num_retreived; ++item)
-                            cart.push_back(retreived[item]);
+                            cout << '\n' << num_retreived << " GPUs matching that name were added to the cart.\n\nCart Updated!\n" << endl;
+                            for (int item = 0; item < num_retreived; ++item)
+                                cart.push_back(retreived[item]);
 
-                        display_cart();
+                            display_cart();
 
-                    }while(again());
+                        }while(again());
+                    }
                     break;
 
-            case 4:
-                    cout << '\n' << GPUs.remove_all() << " GPUs have been removed. The list is now empty." << endl;
-                    break;
+            case 4: {
+                        if (GPUs.empty()){
+                            cout << "\nERROR! There are no GPUs in the list." << endl;
+                            break;
+                        }
 
-            case 5:
-                    do{
-                        string to_remove{};
-                        cout << "\nEnter a GPU name to remove from the list." << endl;
-                        if (GPUs.remove(read_string()))
-                            cout << "\nGPU removed." << endl;
-                        else
-                            cout << "\nThat GPU was not found." << endl;
-                    }while (again());
+                        cout << '\n' << GPUs.remove_all() << " GPUs have been removed. The list is now empty." << endl;
+                        break;
+                    }
+
+            case 5: {
+                        if (GPUs.empty()){
+                            cout << "\nERROR! There are no GPUs in the list." << endl;
+                            break;
+                        }
+                        do{
+                            string to_remove{};
+                            cout << "\nEnter a GPU name to remove from the list." << endl;
+                            if (GPUs.remove(read_string()))
+                                cout << "\nGPU removed." << endl;
+                            else
+                                cout << "\nThat GPU was not found." << endl;
+                        }while (again());
+                    }
                     break;
 
             case 6:
@@ -564,6 +613,10 @@ void Menu::screen_options()
             case 0:
                     break;
             case 1: {
+                        if (Screens.empty()){
+                            cout << "\nERROR! There are no Screens in the list." << endl;
+                            break;
+                        }
                         cout << "\nApply display filters?" << endl;
                         int display_opt{};
                         int displayed{};
@@ -593,47 +646,67 @@ void Menu::screen_options()
                     }
                     break;
 
-            case 2:
-                    do{
-                        cout << "\nEnter a Screen name to find." << endl;
-                        if (!Screens.find(read_string()))
-                            cout << "\nThat Screen was not found." << endl;
-                        else{
-                            cout << "\nThat Screen was found." << endl;
+            case 2: {
+                        if (Screens.empty()){
+                            cout << "\nERROR! There are no Screens in the list." << endl;
+                            break;
                         }
-                    }while (again());
+                        do{
+                            cout << "\nEnter a Screen name to find." << endl;
+                            if (!Screens.find(read_string()))
+                                cout << "\nThat Screen was not found." << endl;
+                            else{
+                                cout << "\nThat Screen was found." << endl;
+                            }
+                        }while (again());
+                    }
                     break;
 
             case 3:
-                    do{
-                        Screen retreived[10];
-                        cout << "\nEnter a Screen name to retreive matches." << endl;
-                        int num_retreived{Screens.retreive(read_string(), retreived)};
+                    {
+                        if (Screens.empty()){
+                            cout << "\nERROR! There are no Screens in the list." << endl;
+                            break;
+                        }
+                        do{
+                            Screen retreived[10];
+                            cout << "\nEnter a Screen name to retreive matches." << endl;
+                            int num_retreived{Screens.retreive(read_string(), retreived)};
 
-                        cout << '\n' << num_retreived << " Screens matching that name were added to the cart.\n\nCart Updated!\n" << endl;
-                        for (int item = 0; item < num_retreived; ++item)
-                            cart.push_back(retreived[item]);
+                            cout << '\n' << num_retreived << " Screens matching that name were added to the cart.\n\nCart Updated!\n" << endl;
+                            for (int item = 0; item < num_retreived; ++item)
+                                cart.push_back(retreived[item]);
 
-                        display_cart();
+                            display_cart();
 
-                    }while (again());
+                        }while (again());
+                    }
                     break;
 
             case 4: {
-
-                    cout << '\n' << Screens.remove_all() << " Screens have been removed. The list is now empty." << endl;
+                        if (Screens.empty()){
+                            cout << "\nERROR! There are no Screens in the list." << endl;
+                            break;
+                        }
+                        cout << '\n' << Screens.remove_all() << " Screens have been removed. The list is now empty." << endl;
                     }
                     break;
 
             case 5: {
-                    do{
-                        cout << "\nEnter a Screen name to remove." << endl;
-                        if (!Screens.remove(read_string()))
-                            cout << "\nThat Screen was not found." << endl;
-                        else{
-                            cout << "\nScreen removed." << endl;
+
+                        if (Screens.empty()){
+                            cout << "\nERROR! There are no Screens in the list." << endl;
+                            break;
                         }
-                    }while (again());
+
+                        do{
+                            cout << "\nEnter a Screen name to remove." << endl;
+                            if (!Screens.remove(read_string()))
+                                cout << "\nThat Screen was not found." << endl;
+                            else{
+                                cout << "\nScreen removed." << endl;
+                            }
+                        }while (again());
                     }
 
                     break;

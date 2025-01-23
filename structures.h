@@ -46,6 +46,7 @@ class CLLGraphics
 
         CLLGraphics& operator=(const CLLGraphics &source);
         int display(const int display_opt, const std::string &review_keyword, const int vram_in, const int fans_in) const;
+        bool empty();
         bool append(const Graphics &source);
         bool remove(const std::string &to_remove);
         int remove_all();
@@ -100,6 +101,7 @@ class ARRScreen
         ARRScreen(const ARRScreen &source);
 
         ARRScreen& operator=(const ARRScreen &source);
+        bool empty();
         int display(const int display_opt, const std::string &the_manufacturer) const;
         bool append(const Screen &source);
         bool remove(const std::string &to_remove);

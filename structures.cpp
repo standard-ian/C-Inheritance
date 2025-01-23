@@ -88,6 +88,11 @@ CLLGraphics& CLLGraphics::operator=(const CLLGraphics &source)
     return *this;
 }
 
+bool CLLGraphics::empty(){
+    if (!rear) return true;
+    return false;
+}
+
 //display all the GPUs in the CLLGraphics, return nodes displayed. this is the wrapper
 int CLLGraphics::display(const int display_opt, const std::string &review_keyword, const int vram_in, const int fans_in) const
 {
@@ -202,9 +207,10 @@ int CLLGraphics::remove_all()
 //remove all recursion
 int CLLGraphics::remove_all(Graphics_Node *&current)
 {
-    if (current == this -> rear)
+    if (current == this -> rear){
         return 0;
-    int count = remove_all(current ->get_next());
+    }
+    int count = remove_all(current -> get_next());
     delete current;
     current = nullptr;
     return count + 1;
@@ -375,6 +381,11 @@ ARRScreen& ARRScreen::operator=(const ARRScreen &source)
     remove_all();
     deep_copy(source);
     return *this;
+}
+
+bool ARRScreen::empty(){
+    if (!*ARR) return true;
+    return false;
 }
 
 //display all, wrapper
