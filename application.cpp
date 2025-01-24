@@ -2,8 +2,7 @@
  * Ian Leuty
  * ileuty@pdx.edu
  * 1/7/2025
- * CS302 Winter 2025
- * Program 1
+ * CS302 Winter 2025 * Program 1
  *
  ********************************************************************
  *
@@ -156,7 +155,8 @@ void Menu::motherboard_options()
                                 case 1: {
                                             cout << endl;
                                             for (const auto& item : Motherboards){
-                                                printf("|\033[38;3;91m%4i. \033[0;0m", count);
+                                                //printf("|\033[38;3;91m%4i. \033[0;0m", count);
+                                                cout << "|\033[38;3;91m" << right << setw(6) << count << ". \033[0;0m";
                                                 if (item.display())
                                                     ++count;
                                             }
@@ -185,7 +185,8 @@ void Menu::motherboard_options()
                                             }
                                             for (const auto& item : Motherboards){
                                                 if (item.is_processor(the_processor)){
-                                                    printf("|\033[38;3;91m%4i. \033[0;0m", count);
+                                                    //printf("|\033[38;3;91m%4i. \033[0;0m", count);
+                                                    cout << "|\033[38;3;91m" << right << setw(6) << count << ". \033[0;0m";
                                                     if (item.display())
                                                         ++count;
                                                 }
@@ -198,7 +199,8 @@ void Menu::motherboard_options()
                                             ports_in = read_int();
                                             for (const auto& item : Motherboards){
                                                 if (item.is_more_than_ports(ports_in)){
-                                                    printf("|\033[38;3;91m%4i. \033[0;0m", count);
+                                                    //printf("|\033[38;3;91m%4i. \033[0;0m", count);
+                                                    cout << "|\033[38;3;91m" << right << setw(6) << count << ". \033[0;0m";
                                                     if (item.display())
                                                         ++count;
                                                 }
@@ -211,7 +213,8 @@ void Menu::motherboard_options()
                                             details_keyword = read_string();
                                             for (const auto& item : Motherboards){
                                                 if (item.is_details_contain(details_keyword)){
-                                                    printf("|\033[38;3;91m%4i. \033[0;0m", count);
+                                                    //printf("|\033[38;3;91m%4i. \033[0;0m", count);
+                                                    cout << "|\033[38;3;91m" << right << setw(6) << count << ". \033[0;0m";
                                                     if (item.display())
                                                         ++count;
                                                 }
@@ -314,11 +317,11 @@ void Menu::motherboard_options()
 
             case 6:
                     do{
-                        bool found{false};
-                        int usb_ports{};
-                        int processor_selection{};
-                        processor the_processor{processor::none};
-                        string details{};
+                        Motherboards.push_back(Motherboard(1));
+
+                        /*
+                        //this was all moved down to the underlying data classes.
+                        //
                         string name{};
                         string type{};
 
@@ -373,6 +376,7 @@ void Menu::motherboard_options()
                         }
 
                         Motherboards.push_back(Motherboard(usb_ports, details.c_str(), the_processor, name.c_str(), type.c_str()));
+                        */
 
                     }while (again());
                     break;
@@ -531,45 +535,13 @@ void Menu::graphics_options()
 
             case 6:
                     do{
-                        int fans{};
-                        int vram{};
-                        string name{};
-                        string review{};
-                        string type{};
-
-                        cout << "\nEnter the Graphics Card name." << endl;
-                        name = read_string();
-
-                        while (GPUs.find(name)){
-                            name = "";
-                            cout << "\nERROR! That item already exists. Try entering a unique name." << endl;
-                            name = read_string();
-                        }
-
-                        cout << "Enter the product type." << endl;
-                        type = read_string();
-
-                        do{
-                            cout << "\nERROR! The type must be \"GPU\"." << endl;
-                            type = read_string();
-                            cout << endl;
-                        }while (type.compare("GPU"));
-
-                        cout << "Enter the number of fans." << endl;
-                        fans = read_int();
-                        cout << "Enter the amount of VRAM." << endl;
-                        vram = read_int();
-                        cout << "Enter a review for the card." << endl;
-                        review = read_string();
-
-                        if (!GPUs.append(Graphics(vram, fans, review, name.c_str(), type.c_str())))
+                        if (!GPUs.append(Graphics(1)))
                             cout << "\nERROR! GPU could not be added." << endl;
-
                     }while (again());
                     break;
 
             case 7: {
-                    if (!load_graphics())
+                    if (!GPUs.load_graphics())
                         cout << "\nERROR! Failed to load GPUs." << endl;
                     }
                     break;
@@ -578,7 +550,9 @@ void Menu::graphics_options()
                         CLLGraphics the_copy;
                         string null_keyword{""};
                         the_copy = GPUs;
-                        cout << "\nThe original list of GPUs was copied" /*<< " (" << the_copy.deep_copy(GPUs) << " items),"*/ << " then cleared. Here is the copy:\n" << endl;
+                        cout << "\nThe original list of GPUs was copied"
+                             //<< " (" << the_copy.deep_copy(GPUs) << " items),"
+                             << " then cleared. Here is the copy:\n" << endl;
                         GPUs.remove_all();
                         the_copy.display(1, null_keyword, 0, 0);
                         cout << "\nHere is the original:\n" << endl;
@@ -713,45 +687,14 @@ void Menu::screen_options()
 
             case 6:
                     do{
-                        int width{};
-                        int height{};
-                        string name{};
-                        string manufacturer{};
-                        string type{};
-
-                        cout << "\nEnter the Display's name." << endl;
-                        name = read_string();
-
-                        while (Screens.find(name)){
-                            name = "";
-                            cout << "\nERROR! That item already exists. Try entering a unique name." << endl;
-                            name = read_string();
-                        }
-
-                        cout << "Enter the product type." << endl;
-                        type = read_string();
-
-                        do{
-                            cout << "\nERROR! The type must be \"Display\"." << endl;
-                            type = read_string();
-                            cout << endl;
-                        }while (type.compare("Display"));
-
-                        cout << "Enter the width." << endl;
-                        width = read_int();
-                        cout << "Enter the height." << endl;
-                        height = read_int();
-                        cout << "Enter the manufacturer." << endl;
-                        manufacturer = read_string();
-
-                        if (!Screens.append(Screen(height, width, manufacturer, name.c_str(), type.c_str())))
+                        if (!Screens.append(Screen(1)))
                             cout << "\nERROR! Screen could not be added." << endl;
 
                     }while (again());
                     break;
 
             case 7: {
-                    if (!load_screens())
+                    if (!Screens.load_screens())
                         cout << "\nERROR! Failed to load screens." << endl;
                     }
                     break;
@@ -760,7 +703,9 @@ void Menu::screen_options()
                         ARRScreen the_copy(0,0);
                         string null_string{};
                         the_copy = Screens;
-                        cout << "\nThe original list of Motherboards was copied" <</* " (" << the_copy.deep_copy(Screens) << " items)," << */" then cleared. Here is the copy:\n" << endl;
+                        cout << "\nThe original list of Motherboards was copied"
+                             //<< " (" << the_copy.deep_copy(Screens) << " items)," <<
+                             << " then cleared. Here is the copy:\n" << endl;
                         Screens.remove_all();
                         the_copy.display(1, null_string);
                         cout << "\nHere is the original:\n" << endl;
@@ -814,6 +759,7 @@ bool Menu::again()
     return false;
 }
 
+//load motherboards in from file to the vector
 bool Menu::load_motherboards()
 {
     cout << "\nEnter the name of the file with the Motherboards inventory." << endl;
@@ -824,107 +770,17 @@ bool Menu::load_motherboards()
     filein.peek();                  //check the file
 
     while (!filein.eof()){            //while !eof flag
-        processor the_processor{processor::none};
-        int usb_ports{};
-        int processor_selection{};
-        string details{};
-        string name{};
-        string type{};
-
-        if (!read_string_from_file(name, ',')) return false;
-        if (!read_string_from_file(type, ',')) return false;
-        if (!read_string_from_file(details, ',')) return false;
-        filein >> usb_ports; filein.ignore(100, ',');
-        filein >> processor_selection; filein.ignore(100, '\n');
-
-        switch (processor_selection){
-            case 1:
-                    the_processor = processor::intel;
-                    break;
-            case 2:
-                    the_processor = processor::amd;
-                    break;
-            case 3:
-                    the_processor = processor::arm;
-                    break;
-            default:
-                    break;
-        }
-
-        Motherboards.push_back(Motherboard(usb_ports, details.c_str(), the_processor, name.c_str(), type.c_str()));
-
+        Motherboards.push_back(Motherboard(filein));
         filein.peek();
     }
+
     filein.close();
     return true;
 }
 
-
-bool Menu::load_screens()
-{
-    cout << "\nEnter the name of the file with the Screens inventory." << endl;
-    string filename = read_string();
-    filein.open(filename);
-
-    if (!filein) return false;
-    filein.peek();                  //check the file
-
-    while (!filein.eof()){            //while !eof flag
-        int height{};
-        int width{};
-        string manufacturer{};
-        string name{};
-        string type{};
-
-        if (!read_string_from_file(name, ',')) return false;
-        if (!read_string_from_file(type, ',')) return false;
-        filein >> width; filein.ignore(100, ',');
-        filein >> height; filein.ignore(100, ',');
-        if (!read_string_from_file(manufacturer, '\n')) return false;
-
-        if (!Screens.append(Screen(width, height, manufacturer, name.c_str(), type.c_str()))) return false;
-
-        filein.peek();
-    }
-    filein.close();
-    return true;
-}
-
-
-bool Menu::load_graphics()
-{
-    cout << "\nEnter the name of the file with the GPU inventory." << endl;
-    string filename = read_string();
-    filein.open(filename);
-
-    if (!filein) return false;
-    filein.peek();
-
-    while (!filein.eof()){
-        int vram{};
-        int fans{};
-        string review{};
-        string name{};
-        string type{};
-
-        if (!read_string_from_file(name, ',')) return false;
-        if (!read_string_from_file(type, ',')) return false;
-        if (!read_string_from_file(review, ',')) return false;
-        filein >> vram; filein.ignore(100, ',');
-        filein >> fans; filein.ignore(100, '\n');
-
-
-        if (!GPUs.append(Graphics(vram, fans, review, name.c_str(), type.c_str()))) return false;
-
-        filein.peek();
-    }
-    filein.close();
-    return true;
-}
-
+//load the cart in from a file to the vector
 bool Menu::load_cart()
 {
-
     cout << "\nEnter the name of the file containing your cart." << endl;
     string filename = read_string();
     filein.open(filename);
@@ -946,6 +802,7 @@ bool Menu::load_cart()
     return true;
 }
 
+//write the cart out to a file
 bool Menu::save_cart()
 {
     cout << "\nEnter the name of the file to store your cart." << endl;
@@ -964,23 +821,24 @@ bool Menu::save_cart()
     return true;
 }
 
-bool Menu::read_string_from_file(string &dest, char delim)
-{
-    const int SIZE{1000};
-    char temp[SIZE];
-    filein.get(temp, SIZE, delim);
-    if (filein.peek() != delim) return false;
-    filein.ignore(100, delim);
-    dest = temp;
-    return true;
-}
 
+//display the cart
 void Menu::display_cart(){
     int count{1};
     for (const auto& item : cart){
         //cout << "\033[38;3;91m" << count++ << ". " << "\033[0;0m";
-        printf("|\033[38;3;91m%4i. \033[0;0m", count++);
+        //printf("|\033[38;3;91m%4i. \033[0;0m", count++);
+        cout << "|\033[38;3;91m" << right << setw(6) << count++ << ". \033[0;0m";
         item.display();
         cout << endl;
     }
+}
+
+//utility function to read in from a file
+bool Menu::read_string_from_file(string &dest, char delim)
+{
+    filein.peek();
+    if (filein.eof()) return false;
+    getline(filein, dest, delim);
+    return true;
 }

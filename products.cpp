@@ -24,8 +24,84 @@
  ********************************************************************
  */
 
+bool Product::read_string_from_file(std::ifstream &filein, std::string &dest, char delim)
+{
+    using namespace std;
+    filein.peek();
+    if (filein.eof()) return false;
+    getline(filein, dest, delim);
+    return true;
+}
+
+//reads a string in and returns it
+const std::string Product::read_string()
+{
+    using namespace std;
+    string the_string;
+    cout << "\033[38;5;32m" << ">>" << "\033[0m";;
+    getline(cin, the_string);
+    return the_string;
+}
+
+//reads an int in and return it
+const int Product::read_int()
+{
+    using namespace std;
+    int the_int{};
+    cout << "\033[38;5;32m" << ">>" << "\033[0m";;
+    cin >> the_int;
+    while (cin.fail()){
+        cin.clear();
+        cin.ignore(100, '\n');
+        cout << "\nYou must enter a number." << endl;
+        cout << "\033[38;5;32m" << ">>" << "\033[0m";;
+        cin >> the_int;
+    }
+    cin.ignore(100, '\n');
+    return the_int;
+}
+
 //default constructor
 Product::Product() : name(nullptr), type(nullptr) {}
+
+//default read in constructor
+Product::Product(int i) : name(nullptr), type(nullptr)
+{
+    using namespace std;
+    string name_in{};
+    string type_in{};
+
+    cout << "\nEnter the Product name." << endl;
+    name_in = read_string();
+
+    cout << "Enter the Product type." << endl;
+    type_in = read_string();
+
+    name = new char[strlen(name_in.c_str()) + 1];
+    strcpy(name, name_in.c_str());
+    type = new char[strlen(type_in.c_str()) + 1];
+    strcpy(type, type_in.c_str());
+}
+
+Product::Product(std::ifstream &filein) : name(nullptr), type(nullptr)
+{
+    using namespace std;
+    if (!filein) return;
+
+    filein.peek();                  //check the file
+
+    if (filein.eof()) return;
+    string name_in{};
+    string type_in{};
+
+    if (!read_string_from_file(filein, name_in, ',')) return;
+    if (!read_string_from_file(filein, type_in, ',')) return;
+
+    name = new char[strlen(name_in.c_str()) + 1];
+    strcpy(name, name_in.c_str());
+    type = new char[strlen(type_in.c_str()) + 1];
+    strcpy(type, type_in.c_str());
+}
 
 //destructor
 Product::~Product()
@@ -152,12 +228,84 @@ bool Product::display() const
 Motherboard::Motherboard()
     : Product(), details(nullptr), usb_ports(0), the_processor(processor::none) {}
 
+//read in constructor
+Motherboard::Motherboard(int i)
+    : Product(i), details(nullptr), usb_ports(0), the_processor(processor::none)
+{
+    using namespace std;
+    int processor_selection{};
+    string details_in{};
+
+    cout << "Enter the details or product specifications." << endl;
+    details_in = read_string();
+    details = new char[strlen(details_in.c_str())];
+    strcpy(details, details_in.c_str());
+
+    cout << "Enter the number of USB ports." << endl;
+    usb_ports = read_int();
+    cout << "Select which processor the board accepts." << endl
+       << '\t' <<  "1. Intel" << endl
+       << '\t' << "2. AMD" << endl
+       << '\t' << "3. ARM" << endl;
+    processor_selection = read_int();
+
+    switch (processor_selection){
+       case 1:
+               the_processor = processor::intel;
+               break;
+       case 2:
+               the_processor = processor::amd;
+               break;
+       case 3:
+               the_processor = processor::arm;
+               break;
+       default:
+               //throw exception
+               break;
+    }
+}
+
 //destructor
 Motherboard::~Motherboard()
 {
     delete [] details;
     details = nullptr;
 }
+
+Motherboard::Motherboard(std::ifstream &filein) : Product(filein)
+{
+    using namespace std;
+
+    if (!filein) return;
+
+    filein.peek();
+
+    if (filein.eof()) return;
+
+    int processor_selection{};
+    string details_in{};
+
+    if (!read_string_from_file(filein, details_in, ',')) return;
+    filein >> usb_ports; filein.ignore(100, ',');
+    filein >> processor_selection; filein.ignore(100, '\n');
+
+    switch (processor_selection){
+        case 1:
+                the_processor = processor::intel;
+                break;
+        case 2:
+                the_processor = processor::amd;
+                break;
+        case 3:
+                the_processor = processor::arm;
+                break;
+        default:
+                break;
+    }
+    details = new char[strlen(details_in.c_str())];
+    strcpy(details, details_in.c_str());
+}
+
 
 //copy constructor
 Motherboard::Motherboard(const Motherboard &source) : Product(source)/*Product(source.name, source.type)*/, details(nullptr), usb_ports(source.usb_ports), the_processor(source.the_processor)
@@ -167,6 +315,9 @@ Motherboard::Motherboard(const Motherboard &source) : Product(source)/*Product(s
     strcpy(details, source.details); //copy
 }
 
+/*
+//this is no longer needed. all reading in happens in the constructor
+
 //constructor w/ args
 Motherboard::Motherboard(const int usb_ports_in, const char *details_in, processor processor_in, const char *name_in, const char *type_in)
     : Product(name_in, type_in), details(nullptr), usb_ports(usb_ports_in), the_processor(processor_in)
@@ -175,6 +326,7 @@ Motherboard::Motherboard(const int usb_ports_in, const char *details_in, process
     details = new char[strlen(details_in) + 1];
     strcpy(details, details_in);
 }
+*/
 
 //overload assignment operator
 Motherboard &Motherboard::operator=(const Motherboard &source)
@@ -267,10 +419,29 @@ bool Motherboard::is_details_contain(const std::string &new_details) const
 //default constructor
 Graphics::Graphics() : Product(), vram(0), fans(0), review("") {}
 
+//read in constructor
+Graphics::Graphics(int i) : Product(i), vram(0), fans(0), review("")
+{
+    using namespace std;
+    cout << "Enter the number of fans." << endl;
+    fans = read_int();
+    cout << "Enter the amount of VRAM." << endl;
+    vram = read_int();
+    cout << "Enter a review for the card." << endl;
+    review = read_string();
+}
+
 //destructor
 Graphics::~Graphics()
 {
     vram = 0; fans = 0; review = "";
+}
+
+Graphics::Graphics(std::ifstream &filein) : Product(filein)
+{
+    if (!read_string_from_file(filein, review, ',')) return;
+    filein >> vram; filein.ignore(100, ',');
+    filein >> fans; filein.ignore(100, '\n');
 }
 
 /*
@@ -279,9 +450,11 @@ Graphics::Graphics(const Graphics &source)
     : Product(source.name, source.type), vram(source.vram), fans(source.fans), review(source.review) {}
 */
 
-//constructor with arguments
+/*
+//constructor with arguments, no longer needed
 Graphics::Graphics(const int vram_in, const int fans_in, const std::string &review_in, const char *name_in, const char *type_in)
     : Product(name_in, type_in), vram(vram_in), fans(fans_in), review(review_in) {}
+*/
 
 //display
 bool Graphics::display() const
@@ -337,12 +510,31 @@ bool Graphics::is_review_contain(const std::string& to_find) const
 //default constructor
 Screen::Screen() : Product(), resolution_height(0), resolution_width(0), manufacturer("") {}
 
+//read in constructor
+Screen::Screen(int i) : Product(i), resolution_height(0), resolution_width(0), manufacturer("")
+{
+    using namespace std;
+    cout << "Enter the width." << endl;
+    resolution_width = read_int();
+    cout << "Enter the height." << endl;
+    resolution_height = read_int();
+    cout << "Enter the manufacturer." << endl;
+    manufacturer = read_string();
+}
+
 //destructor
 Screen::~Screen()
 {
     resolution_height = 0; resolution_width = 0; manufacturer = "";
 }
 
+Screen::Screen(std::ifstream &filein) : Product(filein)
+{
+
+    filein >> resolution_width; filein.ignore(100, ',');
+    filein >> resolution_height; filein.ignore(100, ',');
+    if (!read_string_from_file(filein, manufacturer, '\n')) return;
+}
 /*
 //copy constructor - probably not explicitly needed. no dynamic memory in this class
 Screen::Screen(const Screen &source)
@@ -350,9 +542,11 @@ Screen::Screen(const Screen &source)
       resolution_width(source.resolution_width), manufacturer(source.manufacturer) {}
 */
 
-//constructor w/ arguments
+/*
+//constructor w/ arguments, no longer needed
 Screen::Screen(const int width_in, const int height_in, const std::string &manufacturer_in, const char *name_in, const char *type_in)
     : Product(name_in, type_in), resolution_height(height_in), resolution_width(width_in), manufacturer(manufacturer_in) {}
+*/
 
 //display a Screen
 bool Screen::display() const

@@ -69,6 +69,8 @@ class Product
     public:
         Product();
         ~Product();
+        Product(int); //we still need a default constructor
+        Product(std::ifstream &filein);
         Product(const char *name_in, const char *type_in);
         Product(const Product &source);
 
@@ -79,6 +81,9 @@ class Product
         int copy_type(char *&copy) const;
         bool display() const;
 
+        const int read_int();
+        const std::string read_string();
+        bool read_string_from_file(std::ifstream &filein, std::string &dest, char delim);
     protected:
         char *name;
         char *type;
@@ -94,7 +99,9 @@ class Motherboard : public Product
     public:
         Motherboard();
         ~Motherboard();
-        Motherboard(const int usb_ports, const char *details, processor the_processor, const char *name, const char *type_in);
+        Motherboard(int);
+        Motherboard(std::ifstream &filein);
+        //Motherboard(const int usb_ports, const char *details, processor the_processor, const char *name, const char *type_in);
         Motherboard(const Motherboard &source);
 
         Motherboard& operator=(const Motherboard &source);
@@ -117,8 +124,10 @@ class Graphics : public Product
     public:
         Graphics();
         ~Graphics();
-        //Graphics(const Graphics &source);
-        Graphics(const int vram_in, const int fans_in, const std::string &review_in, const char *name_in, const char *type_in);
+        Graphics(int);
+        Graphics(const std::string &null);
+        Graphics(std::ifstream &filein);
+        //Graphics(const int vram_in, const int fans_in, const std::string &review_in, const char *name_in, const char *type_in);
 
         bool display() const;
 
@@ -140,8 +149,10 @@ class Screen : public Product
     public:
         Screen();
         ~Screen();
-        //Screen(const Screen &source);
-        Screen(const int height_in, const int width_in, const std::string &manufacturer_in, const char *name_in, const char *type_in);
+        Screen(int);
+        Screen(const std::string &null);
+        Screen(std::ifstream &filein);
+        //Screen(const int height_in, const int width_in, const std::string &manufacturer_in, const char *name_in, const char *type_in);
 
         bool display() const;
 

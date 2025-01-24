@@ -1,4 +1,5 @@
 /*
+    iout << "|\033[38;3;91m" << left << setw(4) << nums ++ << "\033[0;0m";
  * Ian Leuty
  * ileuty@pdx.edu
  * 1/7/2025
@@ -31,9 +32,11 @@ Graphics_Node::Graphics_Node(const Graphics_Node &source) : Graphics(source), ne
 //constructor w/ arguments - Graphics object
 Graphics_Node::Graphics_Node(const Graphics &source) : Graphics(source), next(nullptr) {}
 
+/*
 //constructor w/ individual arguments
 Graphics_Node::Graphics_Node(const int vram_in, const int fans_in, const std::string &review_in, const std::string &name_in, const std:: string &type_in)
     : Graphics(vram_in, fans_in, review_in, name_in.c_str(), type_in.c_str()), next(nullptr) {}
+*/
 
 //sets next pointer, usually private to the structure using this node
 void Graphics_Node::set_next(Graphics_Node *new_next)
@@ -147,6 +150,11 @@ int CLLGraphics::display(Graphics_Node *current, const int display_opt, const st
 //add a new Graphics to the CLLGraphics. return success or faliure.
 bool CLLGraphics::append(const Graphics &source)
 {
+    char* copy = nullptr;
+    source.copy_name(copy);
+    std::string searching = copy;
+
+    if (find(searching)) return false;
     if (!rear){
         rear = new Graphics_Node(source);
         rear -> set_next(rear);
@@ -284,9 +292,31 @@ int CLLGraphics::deep_copy(Graphics_Node *source_current, const Graphics_Node *s
     return deep_copy(source_current -> get_next(), source_rear, dest_current -> get_next()) + 1;
 }
 
+bool CLLGraphics::load_graphics()
+{
+    using namespace std;
+    cout << "\nEnter the name of the file with the GPU inventory." << endl;
+    string filename = rear -> read_string();
+    filein.open(filename);
+
+    if (!filein) return false;
+    filein.peek();
+
+    while (!filein.eof()){
+
+        if (!append(Graphics(filein))) return false;
+
+        filein.peek();
+    }
+    filein.close();
+    return true;
+}
+
 void CLLGraphics::put_nums() const
 {
-    printf("|\033[38;3;91m%4i. \033[0;0m", nums++);
+    //printf("|\033[38;3;91m%4i. \033[0;0m", nums++);
+    using std::right, std::setw, std::cout;
+    cout << "|\033[38;3;91m" << right << setw(6) << nums++ << ". \033[0;0m";
 }
 
 void CLLGraphics::reset_nums() const
@@ -310,9 +340,11 @@ Screen_Node::Screen_Node(const Screen_Node &source) : Screen(source), next(nullp
 //constructor w/ arguments - Screen object
 Screen_Node::Screen_Node(const Screen &source) : Screen(source), next(nullptr) {}
 
+/*
 //constructor w/ individual arguments
 Screen_Node::Screen_Node(const int height_in, const int width_in, const std::string &manufacturer, const std::string &name_in, const std::string &type_in)
     : Screen(height_in, width_in, manufacturer, name_in.c_str(), type_in.c_str()), next(nullptr) {}
+*/
 
 //sets next pointer, usually private to the structure using this node
 void Screen_Node::set_next(Screen_Node *new_next)
@@ -454,6 +486,10 @@ int ARRScreen::display(Screen_Node *current, const int display_opt, const std::s
 //add a new Screen to the ARR, wrapper
 bool ARRScreen::append(const Screen &source)
 {
+    char* copy = nullptr;
+    source.copy_name(copy);
+    std::string searching = copy;
+    if (find(searching)) return false;
     //if this function is being called, we can assume that ARR has had dynamic memory assigned by constructor
     //perhaps we should still check?
     Screen_Node **ptr{ARR};                                 //temp pointer for traversal
@@ -518,8 +554,8 @@ int ARRScreen::remove_all()
     if (!ARR) return 0;
     Screen_Node **ptr{ARR};
     int removed = remove_all(ptr);
-    delete [] ARR;
-    ARR = nullptr;
+    //delete [] ARR;
+    //ARR = nullptr;
     return removed;
 }
 
@@ -629,9 +665,30 @@ int ARRScreen::deep_copy(Screen_Node *source, Screen_Node *&dest)
     return deep_copy(source -> get_next(), dest -> get_next()) + 1;
 }
 
+bool ARRScreen::load_screens()
+{
+    using namespace std;
+    cout << "\nEnter the name of the file with the Screens inventory." << endl;
+    string filename = (*ARR) -> read_string();
+    filein.open(filename);
+
+    if (!filein) return false;
+    filein.peek();                  //check the file
+
+    while (!filein.eof()){            //while !eof flag
+        if (!append(Screen(filein))) return false;
+
+        filein.peek();
+    }
+    filein.close();
+    return true;
+}
+
 void ARRScreen::put_nums() const
 {
-    printf("|\033[38;3;91m%4i. \033[0;0m", nums++);
+    //printf("|\033[38;3;91m%4i. \033[0;0m", nums++);
+    using std::right, std::setw, std::cout;
+    cout << "|\033[38;3;91m" << right << setw(6) << nums++ << ". \033[0;0m";
 }
 
 void ARRScreen::reset_nums() const

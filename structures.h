@@ -23,7 +23,7 @@ class Graphics_Node : public Graphics
         Graphics_Node();
         Graphics_Node(const Graphics_Node &source);
         Graphics_Node(const Graphics &source);
-        Graphics_Node(const int vram_in, const int fans_in, const std::string &review_in, const std::string &name_in, const std::string &type_in);
+        //Graphics_Node(const int vram_in, const int fans_in, const std::string &review_in, const std::string &name_in, const std::string &type_in);
 
         void set_next(Graphics_Node *new_next);
         Graphics_Node*& get_next();
@@ -53,8 +53,10 @@ class CLLGraphics
         bool find(const std::string &to_find);
         int retreive(const std::string &to_retreive, Graphics *retreived) const;
         int deep_copy(const CLLGraphics &source);
+        bool load_graphics();
 
     protected:
+        std::ifstream filein;
         Graphics_Node *rear;
         mutable int nums;
 
@@ -79,7 +81,7 @@ class Screen_Node : public Screen
         Screen_Node();
         Screen_Node(const Screen &source);
         Screen_Node(const Screen_Node &source);
-        Screen_Node(const int height_in, const int width_in, const std::string &manufacturer, const std::string &name_in, const std::string &type_in);
+        //Screen_Node(const int height_in, const int width_in, const std::string &manufacturer, const std::string &name_in, const std::string &type_in);
 
         void set_next(Screen_Node *new_next);
         Screen_Node*& get_next();
@@ -109,8 +111,10 @@ class ARRScreen
         bool find(const std::string &to_find) const;
         int retreive(const std::string &to_retreive, Screen *retreived) const;
         int deep_copy(const ARRScreen &source);
+        bool load_screens();
 
     protected:
+        std::ifstream filein;
         Screen_Node **ARR;
         int size, max_per_chain;
         mutable int nums;
